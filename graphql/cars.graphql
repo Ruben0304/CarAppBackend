@@ -1,10 +1,48 @@
+# Esta consulta obtiene todos los carros registrados en la base de datos.
+# Devuelve la información básica de cada carro, como nombre, año, precio de venta, kilometraje, tipo de combustible, etc.
 query {
-    get_conversaciones {
-        id_mecanico
-        id_usuario
-        conversation {
-            autor
-            mensaje
-        }
+    carros {
+        name             # Nombre del carro
+        year             # Año del carro
+        selling_price    # Precio de venta
+        km_driven        # Kilómetros recorridos
+        fuel             # Tipo de combustible (por ejemplo, "Petrol")
+        seller_type      # Tipo de vendedor (por ejemplo, "Individual")
+        transmission     # Tipo de transmisión (Manual o Automático)
+        owner            # Número de propietarios anteriores (por ejemplo, "First Owner")
     }
 }
+
+
+# Esta consulta filtra los carros cuyo precio de venta sea menor o igual a un valor específico.
+# En este caso, solo se devuelven carros con un precio de venta de 100,000 o menos.
+query {
+    carros(precio_max: 100000) {
+        name
+        year
+        selling_price
+        km_driven
+        fuel
+        seller_type
+        transmission
+        owner
+    }
+}
+
+
+# Esta consulta combina los dos parámetros:
+# 1. Filtra los carros cuyo precio de venta es menor o igual a 200,000.
+# 2. Limita la cantidad de carros devueltos a 3.
+query {
+    carros(precio_max: 200000, cantidad: 3) {
+        name
+        year
+        selling_price
+        km_driven
+        fuel
+        seller_type
+        transmission
+        owner
+    }
+}
+

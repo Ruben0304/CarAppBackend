@@ -1,0 +1,54 @@
+# Esta consulta obtiene todas las conversaciones registradas.
+# Devuelve el ID del mecánico, el ID del usuario y la lista de mensajes intercambiados en la conversación.
+query {
+    conversaciones {
+        idMecanico      # ID del mecánico
+        idUsuario       # ID del usuario
+        conversation {   # Lista de mensajes en la conversación
+            autor          # Autor del mensaje (usuario o mecánico)
+            mensaje        # Contenido del mensaje
+        }
+    }
+}
+
+
+# Esta consulta obtiene las conversaciones filtradas por el ID de un mecánico en particular.
+# Solo devuelve las conversaciones donde el mecánico tiene el ID "mecanico001".
+query {
+    conversaciones(idMecanico: "mecanico001") {
+        idMecanico
+        idUsuario
+        conversation {
+            autor
+            mensaje
+        }
+    }
+}
+
+
+# Esta consulta devuelve una cantidad limitada de conversaciones.
+# En este caso, se limita a mostrar solo 2 conversaciones.
+query {
+    conversaciones(cantidad: 2) {
+        idMecanico
+        idUsuario
+        conversation {
+            autor
+            mensaje
+        }
+    }
+}
+
+
+# Aquí combinamos los dos parámetros: filtramos por el ID del mecánico y además limitamos la cantidad de resultados.
+# Solo se muestran 3 conversaciones del mecánico con ID "mecanico002".
+query {
+    conversaciones(idMecanico: "mecanico002", cantidad: 3) {
+        idMecanico
+        idUsuario
+        conversation {
+            autor
+            mensaje
+        }
+    }
+}
