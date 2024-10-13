@@ -1,3 +1,49 @@
+POST http://localhost:8080/embed_queries
+Content-Type: application/json
+Content-Length: 83
+User-Agent: IntelliJ HTTP Client/PyCharm 2024.1.2
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+{
+  "texts": [
+    "Este es el primer texto largo .",
+    "Este es otro tex."
+  ]
+}
+
+<> 2024-10-13T033251.200.json
+
+###
+
+POST http://localhost:8080/embed_documents
+Content-Type: application/json
+Content-Length: 154
+User-Agent: IntelliJ HTTP Client/PyCharm 2024.1.2
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+{
+  "texts": [
+    "Este es el primer texto largo que será enviado mediante POST.",
+    "Este es otro texto largo que también debe ser procesado."
+  ]
+}
+
+<> 2024-10-13T033145.200.json
+
+###
+
+GET http://127.0.0.1:8080/hello/User
+Accept: application/json
+User-Agent: IntelliJ HTTP Client/PyCharm 2024.1.2
+Accept-Encoding: br, deflate, gzip, x-gzip
+content-length: 0
+
+<> 2024-10-13T033142.404.json
+
+###
+
 POST http://localhost:8080/embed_documents
 Content-Type: application/json
 Content-Length: 154

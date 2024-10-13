@@ -21,5 +21,13 @@ Content-Type: application/json
   ]
 }
 
-### Prueba del endpoint GET /embed_queries
-POST http://localhost:8080/embed_queries?texts=Texto%201&texts=Texto%202&texts=Texto%203
+### Prueba del endpoint POST /embed_queries
+POST http://localhost:8080/embed_queries
+Content-Type: application/json
+
+{
+  "texts": [
+    "Este es el primer texto largo .",
+    "Este es otro tex."
+  ]
+}
