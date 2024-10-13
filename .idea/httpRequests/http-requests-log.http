@@ -1,3 +1,127 @@
+POST http://localhost:8080/embed_documents
+Content-Type: application/json
+Content-Length: 154
+User-Agent: IntelliJ HTTP Client/PyCharm 2024.1.2
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+{
+  "texts": [
+    "Este es el primer texto largo que será enviado mediante POST.",
+    "Este es otro texto largo que también debe ser procesado."
+  ]
+}
+
+<> 2024-10-13T032949.200.json
+
+###
+
+POST http://localhost:8080/embed_documents
+Content-Type: application/json
+Content-Length: 154
+User-Agent: IntelliJ HTTP Client/PyCharm 2024.1.2
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+{
+  "texts": [
+    "Este es el primer texto largo que será enviado mediante POST.",
+    "Este es otro texto largo que también debe ser procesado."
+  ]
+}
+
+<> 2024-10-13T032844.200.json
+
+###
+
+POST http://localhost:8080/embed_documents
+Content-Type: application/json
+Content-Length: 154
+User-Agent: IntelliJ HTTP Client/PyCharm 2024.1.2
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+{
+  "texts": [
+    "Este es el primer texto largo que será enviado mediante POST.",
+    "Este es otro texto largo que también debe ser procesado."
+  ]
+}
+
+<> 2024-10-13T032538.405.json
+
+###
+
+GET http://localhost:8080/embed_queries?texts=Texto 1&texts=Texto 2&texts=Texto 3
+User-Agent: IntelliJ HTTP Client/PyCharm 2024.1.2
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+content-length: 0
+
+<> 2024-10-13T032536.500.txt
+
+###
+
+GET http://localhost:8080/embed_queries?texts=Texto 1&texts=Texto 2&texts=Texto 3
+User-Agent: IntelliJ HTTP Client/PyCharm 2024.1.2
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+content-length: 0
+
+<> 2024-10-13T032533.500.txt
+
+###
+
+GET http://localhost:8080/embed_queries?text=Este es un texto más corto para GET
+User-Agent: IntelliJ HTTP Client/PyCharm 2024.1.2
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+content-length: 0
+
+<> 2024-10-13T032123.422.json
+
+###
+
+GET http://localhost:8000/embed_queries?text=Este es un texto más corto para GET
+User-Agent: IntelliJ HTTP Client/PyCharm 2024.1.2
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+content-length: 0
+
+<> 2024-10-13T032113.404.json
+
+###
+
+GET http://127.0.0.1:8080/embed_queries/papasito
+Accept: application/json
+User-Agent: IntelliJ HTTP Client/PyCharm 2024.1.2
+Accept-Encoding: br, deflate, gzip, x-gzip
+content-length: 0
+
+<> 2024-10-13T031605.404.json
+
+###
+
+GET http://127.0.0.1:8080/embed_queries/papasito
+Accept: application/json
+User-Agent: IntelliJ HTTP Client/PyCharm 2024.1.2
+Accept-Encoding: br, deflate, gzip, x-gzip
+content-length: 0
+
+<> 2024-10-13T031557.404.json
+
+###
+
+GET http://127.0.0.1:8000/embed_queries/papasito
+Accept: application/json
+User-Agent: IntelliJ HTTP Client/PyCharm 2024.1.2
+Accept-Encoding: br, deflate, gzip, x-gzip
+content-length: 0
+
+<> 2024-10-13T031544.404.json
+
+###
+
 GET http://127.0.0.1:8000/hello/User
 Accept: application/json
 User-Agent: IntelliJ HTTP Client/PyCharm 2024.1.2
