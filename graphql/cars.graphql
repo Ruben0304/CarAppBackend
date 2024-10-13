@@ -1,0 +1,10 @@
+query {
+    get_conversaciones {
+        id_mecanico
+        id_usuario
+        conversation {
+            autor
+            mensaje
+        }
+    }
+}
