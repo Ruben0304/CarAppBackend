@@ -15,3 +15,14 @@ class Carro:
     seller_type: str
     transmission: str
     owner: str
+
+@strawberry.input
+class CarroInputUpdate:
+    name: Optional[str] = None
+    year: Optional[int] = None
+    selling_price: Optional[int] = None
+    km_driven: Optional[int] = None
+    fuel: Optional[str] = None
+    seller_type: Optional[str] = None
+    transmission: Optional[str] = None
+    owner: Optional[str] = None
