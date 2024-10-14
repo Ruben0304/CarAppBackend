@@ -7,12 +7,11 @@ import strawberry
 # Importamos GraphQLRouter de strawberry.fastapi para integrar GraphQL con FastAPI
 from strawberry.fastapi import GraphQLRouter
 
-from querys.Mutation import Mutation
 # Importamos la clase Query que contiene nuestras consultas (queries) de GraphQL
 from querys.Query import Query  # Asegúrate de que este archivo esté en la ruta correcta
 
 # Crear el esquema de GraphQL usando la clase Query que define las consultas
-schema = strawberry.Schema(query=Query, mutation=Mutation)
+schema = strawberry.Schema(query=Query)
 
 # Crear la aplicación FastAPI
 app = FastAPI()

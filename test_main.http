@@ -1,11 +1,33 @@
 # Test your FastAPI endpoints
 
-GET http://127.0.0.1:8000/
+GET http://127.0.0.1:8080/
 Accept: application/json
 
 ###
 
-GET http://127.0.0.1:8000/hello/User
+GET http://127.0.0.1:8080/hello/User
 Accept: application/json
 
 ###
+
+### Prueba del endpoint POST /embed_documents
+POST http://localhost:8080/embed_documents
+Content-Type: application/json
+
+{
+  "texts": [
+    "Este es el primer texto largo que será enviado mediante POST.",
+    "Este es otro texto largo que también debe ser procesado."
+  ]
+}
+
+### Prueba del endpoint POST /embed_queries
+POST http://localhost:8080/embed_queries
+Content-Type: application/json
+
+{
+  "texts": [
+    "Este es el primer texto largo .",
+    "Este es otro tex."
+  ]
+}
