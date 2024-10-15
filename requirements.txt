@@ -5,3 +5,4 @@ pymongo~=4.9.2
 motor
 cohere
 python-dotenv
+qdrant_client
