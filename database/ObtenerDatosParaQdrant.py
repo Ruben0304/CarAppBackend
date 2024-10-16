@@ -1,4 +1,6 @@
 # Extraer todos los documentos de MongoDB
+from bson import ObjectId
+
 from database.MongoConection import db
 
 textos = []
@@ -22,3 +24,19 @@ def obtener_documentos(coleccion_name):
             # # Vectorizar el documento
             # vector = await embed_documents([texto_concatenado])
         return [ids, textos]
+
+
+async def obtener_documento_carro(coleccion_name, id: ObjectId):
+    documento = await db[coleccion_name].find_one({"_id": id})  # Añadido await
+    if documento is None:
+        raise ValueError(f"No se encontró el documento con id {id}")
+
+    name = documento["name"]
+    selling_price = documento["selling_price"]
+    km_driven = documento["km_driven"]
+
+    # Convertir los valores a string y concatenar
+    texto_concatenado = f"{name} {selling_price} {km_driven}"
+    id = documento["_id"]
+
+    return [id, texto_concatenado]

@@ -1,6 +1,7 @@
 import strawberry
 
 from database.MongoConection import db
+from embeddings.QdrantManager import obtenerEmbedingsDeCarroInsertadoEInsertar
 from models.Car import Carro, CarroInputUpdate
 from models.Conversation import Conversacion, Mensaje
 from typing import List, Optional
@@ -23,10 +24,11 @@ class Mutation:
             "owner": input.owner
         }
         resultado = await db.carros.insert_one(nuevo_carro)
-
         nuevo_id = str(resultado.inserted_id)
-
         del nuevo_carro["_id"]
+        object_id = ObjectId(nuevo_id)
+        await obtenerEmbedingsDeCarroInsertadoEInsertar(object_id)
+
         return Carro(_id=nuevo_id, **nuevo_carro)
 
     @strawberry.mutation

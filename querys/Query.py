@@ -1,6 +1,7 @@
 import strawberry
-
 from database.MongoConection import db
+from embeddings.EmbeddingGenerator import embed_queries
+from embeddings.QdrantManager import qdrant_client
 from models.Car import Carro, CarroInputUpdate
 from models.Conversation import Conversacion, Mensaje
 from typing import List, Optional
@@ -55,5 +56,30 @@ class Query:
         carros_data = await db.carros.find(query).to_list(length=cantidad)
 
         # Convertimos los documentos de MongoDB a objetos del tipo Carro.
+        return [Carro(**car) for car in carros_data]
+
+    #POR PROBAR AUN
+    @strawberry.field
+    async def search_carros(self, query: str) -> List[Carro]:
+        # Paso 1: Vectorizar el texto de la consulta usando la función de la API de embedding
+        vector_query = await embed_queries([query])  # La función espera una lista de textos, incluso si es solo uno
+
+        # Extraer el vector desde el campo float_ (es una lista de listas, por lo que tomamos el primer vector)
+        vector = vector_query.float_[0]
+
+        # Paso 2: Enviar el vector a Qdrant para buscar los 10 puntos más cercanos
+        search_result = qdrant_client.search(
+            collection_name="mi_coleccion",  # Nombre de tu colección en Qdrant
+            query_vector=vector,
+            limit=10  # Limitar la búsqueda a los 10 puntos más cercanos
+        )
+
+        # Paso 3: Obtener los IDs de los puntos resultantes de Qdrant
+        ids = [result.payload["original_id"] for result in search_result]  # Extraemos solo los IDs de los puntos
+
+        # Paso 4: Usar los IDs obtenidos para consultar la base de datos MongoDB
+        carros_data = await db.carros.find({"_id": {"$in": ids}}).to_list(length=10)
+
+        # Paso 5: Convertir los documentos de MongoDB en objetos del tipo Carro y devolver la lista
         return [Carro(**car) for car in carros_data]
 
