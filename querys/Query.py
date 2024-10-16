@@ -1,7 +1,8 @@
 import strawberry
-
 from database.MongoConection import db
-from models.Car import Carro
+from embeddings.EmbeddingGenerator import embed_queries
+from embeddings.QdrantManager import qdrant_client
+from models.Car import Carro, CarroInputUpdate
 from models.Conversation import Conversacion, Mensaje
 from typing import List, Optional
 
@@ -42,14 +43,43 @@ class Query:
     # 2. `cantidad` (opcional): limita la cantidad de carros a devolver.
     # Si no se pasan parámetros, se devuelven todos los carros.
     @strawberry.field
-    async def carros(self, precio_max: Optional[int] = None, cantidad: Optional[int] = None) -> List[Carro]:
+    async def carros(self, precio_max: Optional[int] = None, cantidad: Optional[int] = None,  nombre_marca: Optional[str] = None ) -> List[Carro]:
         # Si se pasa un precio máximo, filtramos por carros cuyo precio de venta sea menor o igual.
         query = {}
         if precio_max:
             query["selling_price"] = {"$lte": precio_max}
+
+        if nombre_marca:
+            query["name"] = {"$regex": nombre_marca, "$options": "i"}
 
         # Realizamos la consulta en MongoDB, aplicando el filtro si es necesario.
         carros_data = await db.carros.find(query).to_list(length=cantidad)
 
         # Convertimos los documentos de MongoDB a objetos del tipo Carro.
         return [Carro(**car) for car in carros_data]
+
+    #POR PROBAR AUN
+    @strawberry.field
+    async def search_carros(self, query: str) -> List[Carro]:
+        # Paso 1: Vectorizar el texto de la consulta usando la función de la API de embedding
+        vector_query = await embed_queries([query])  # La función espera una lista de textos, incluso si es solo uno
+
+        # Extraer el vector desde el campo float_ (es una lista de listas, por lo que tomamos el primer vector)
+        vector = vector_query.float_[0]
+
+        # Paso 2: Enviar el vector a Qdrant para buscar los 10 puntos más cercanos
+        search_result = qdrant_client.search(
+            collection_name="mi_coleccion",  # Nombre de tu colección en Qdrant
+            query_vector=vector,
+            limit=10  # Limitar la búsqueda a los 10 puntos más cercanos
+        )
+
+        # Paso 3: Obtener los IDs de los puntos resultantes de Qdrant
+        ids = [result.payload["original_id"] for result in search_result]  # Extraemos solo los IDs de los puntos
+
+        # Paso 4: Usar los IDs obtenidos para consultar la base de datos MongoDB
+        carros_data = await db.carros.find({"_id": {"$in": ids}}).to_list(length=10)
+
+        # Paso 5: Convertir los documentos de MongoDB en objetos del tipo Carro y devolver la lista
+        return [Carro(**car) for car in carros_data]
+
