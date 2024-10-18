@@ -60,6 +60,17 @@ class Query:
         # Convertimos los documentos de MongoDB a objetos del tipo Carro.
         return [Carro(**car) for car in carros_data]
 
+    @strawberry.field
+    async def piezas(self, tipo: Optional[str] = None, cantidad: Optional[int] = None) -> List[Pieza]:
+        query = {}
+        if tipo:
+            query["tipo"] = {"$regex": tipo, "$options": "i"}
+
+        # Realizamos la consulta en MongoDB, aplicando el filtro si es necesario.
+        piezas_data = await db.piezas.find(query).to_list(length=cantidad)
+
+        return [Pieza(**p) for p in piezas_data]
+
     #POR PROBAR AUN
     @strawberry.field
     async def search_carros(self, query: str) -> List[Carro]:
