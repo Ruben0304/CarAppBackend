@@ -1,11 +1,15 @@
 import strawberry
 
 from database.MongoConection import db
-from embeddings.QdrantManager import obtenerEmbedingsDeCarroInsertadoEInsertar
+from embeddings.QdrantManager import obtenerEmbedingsDeCarroInsertadoEInsertar, \
+    obtenerEmbedingsDePiezaInsertadoEInsertar
 from models.Car import Carro, CarroInputUpdate
 from models.Conversation import Conversacion, Mensaje
 from typing import List, Optional
 from bson import ObjectId
+
+from models.Pieza import Pieza, PiezaInputUpdate
+
 
 @strawberry.type
 class Mutation:
@@ -46,3 +50,24 @@ class Mutation:
         carro_actualizado = await db.carros.find_one({"_id": object_id})
 
         return Carro(**carro_actualizado)
+
+    #Insercion de una nueva pieza
+    @strawberry.mutation
+    async def insertar_pieza(self, input: PiezaInputUpdate) -> Pieza:
+        nueva_pieza = {
+            "tipo": input.tipo,
+            "modelo": input.modelo,
+            "precio": input.precio,
+            "uso": input.uso,
+            "cantidad": input.cantidad
+        }
+        resultado = await db.piezas.insert_one(nueva_pieza)
+
+        nuevo_id = str(resultado.inserted_id)
+
+        del nueva_pieza["_id"]
+
+        object_id = ObjectId(nuevo_id)
+       # await obtenerEmbedingsDePiezaInsertadoEInsertar(object_id)
+
+        return Pieza(_id=nuevo_id, **nueva_pieza)

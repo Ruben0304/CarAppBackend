@@ -6,7 +6,7 @@ from bson import ObjectId
 from embeddings.EmbeddingGenerator import embed_documents
 
 import embeddings.EmbeddingGenerator
-from database.ObtenerDatosParaQdrant import obtener_documentos, obtener_documento_carro
+from database.ObtenerDatosParaQdrant import obtener_documentos, obtener_documento_carro, obtener_documento_pieza
 
 qdrant_client = QdrantClient(
     url="https://8b479d4d-d506-4ec1-9e8d-0fa8bbafa172.europe-west3-0.gcp.cloud.qdrant.io:6333",
@@ -92,3 +92,18 @@ async def obtenerEmbedingsDeCarroInsertadoEInsertar(id: ObjectId):
     print(vectors)
 
     insert_document(ids, vectors.float_[0], "mi_coleccion")
+
+async def obtenerEmbedingsDePiezaInsertadoEInsertar(id: ObjectId):
+    pieza = await obtener_documento_pieza("piezas", id)  # Añadido await
+
+    ids = pieza[0]
+    textos = pieza[1]
+
+    print(ids)
+    print(textos)
+
+    vectors = await embed_documents([textos])
+
+    print(vectors)
+
+    insert_document(ids, vectors.float_[0], "mi_coleccion") #CAMBIAR NOMBRE A COLECCION DE PIEZAS
