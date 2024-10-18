@@ -2,3 +2,7 @@ fastapi
 uvicorn
 strawberry-graphql
 motor
+cohere
+python-dotenv
+qdrant_client
+pymongo
