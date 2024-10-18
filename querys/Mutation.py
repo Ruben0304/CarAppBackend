@@ -7,6 +7,9 @@ from models.Conversation import Conversacion, Mensaje
 from typing import List, Optional
 from bson import ObjectId
 
+from models.Pieza import Pieza
+
+
 @strawberry.type
 class Mutation:
 
@@ -46,3 +49,20 @@ class Mutation:
         carro_actualizado = await db.carros.find_one({"_id": object_id})
 
         return Carro(**carro_actualizado)
+
+    #Insercion de una nueva pieza
+    @strawberry.mutation
+    async def insertar_pieza(self, input: Pieza) -> Pieza:
+        nueva_pieza = {
+            "name": input.name
+        }
+        resultado = await db.piezas.insert_one(nueva_pieza)
+
+        nuevo_id = str(resultado.inserted_id)
+
+        del nueva_pieza["_id"]
+
+        object_id = ObjectId(nuevo_id)
+        await obtenerEmbedingsDePiezaInsertadoEInsertar(object_id)
+
+        return Pieza(_id=nuevo_id, **nueva_pieza)

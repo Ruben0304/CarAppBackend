@@ -40,3 +40,17 @@ async def obtener_documento_carro(coleccion_name, id: ObjectId):
     id = documento["_id"]
 
     return [id, texto_concatenado]
+
+async def obtener_documento_pieza(coleccion_name, id: ObjectId):
+
+    documento = await db[coleccion_name].find_one({"_id": id})  # Añadido await
+    if documento is None:
+        raise ValueError(f"No se encontró el documento con id {id}")
+
+    name = documento["name"]
+
+    # Convertir los valores a string y concatenar
+    texto_concatenado = f"{name}"
+    id = documento["_id"]
+
+    return [id, texto_concatenado]

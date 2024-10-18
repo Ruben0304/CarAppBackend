@@ -6,6 +6,8 @@ from models.Car import Carro, CarroInputUpdate
 from models.Conversation import Conversacion, Mensaje
 from typing import List, Optional
 
+from models.Pieza import Pieza
+
 
 @strawberry.type
 class Query:
@@ -82,5 +84,28 @@ class Query:
 
         # Paso 5: Convertir los documentos de MongoDB en objetos del tipo Carro y devolver la lista
         return [Carro(**car) for car in carros_data]
+
+    @strawberry.field
+    async def search_piezas(self, query: str) -> List[Pieza]:
+
+        vector_query = await embed_queries([query])  # La función espera una lista de textos, incluso si es solo uno
+
+        vector = vector_query.float_[0]
+
+
+        search_result = qdrant_client.search(
+            collection_name="mi_coleccion",  # Cambiar a la coleccion de piezas
+            query_vector=vector,
+            limit=10  # Limitar la búsqueda a los 10 puntos más cercanos
+        )
+
+        # Paso 3: Obtener los IDs de los puntos resultantes de Qdrant
+        ids = [result.payload["original_id"] for result in search_result]  # Extraemos solo los IDs de los puntos
+
+        # Paso 4: Usar los IDs obtenidos para consultar la base de datos MongoDB
+        piezas_data = await db.piezas.find({"_id": {"$in": ids}}).to_list(length=10)
+
+        # Paso 5: Convertir los documentos de MongoDB en objetos del tipo Carro y devolver la lista
+        return [Pieza(**p) for p in piezas_data]
 
 
