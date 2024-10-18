@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="506b0f64-1ddb-4db7-aef0-d0c91d75e696" name="Changes" comment="vectores carros">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="506b0f64-1ddb-4db7-aef0-d0c91d75e696" name="Changes" comment="ddd">
+      <change afterPath="$PROJECT_DIR$/graphql/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -75,6 +76,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "master",
     "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "D:/Proyectos/python/CarAppBackend",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -85,6 +87,9 @@
   }
 }]]></component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Proyectos\python\CarAppBackend" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\Proyectos\python\CarAppBackend\database" />
     </key>
@@ -201,7 +206,15 @@
       <option name="project" value="LOCAL" />
       <updated>1729043353773</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="ddd">
+      <option name="closed" value="true" />
+      <created>1729226140258</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1729226140258</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -209,11 +222,11 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="ddd" />
     <MESSAGE value="Primer merge" />
     <MESSAGE value="Mutation added, actualizar carro" />
     <MESSAGE value="vectores carros" />
-    <option name="LAST_COMMIT_MESSAGE" value="vectores carros" />
+    <MESSAGE value="ddd" />
+    <option name="LAST_COMMIT_MESSAGE" value="ddd" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/CarAppBackend$ObtenerDatosParaQdrant.coverage" NAME="ObtenerDatosParaQdrant Coverage Results" MODIFIED="1729026524422" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/database" />
