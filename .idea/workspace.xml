@@ -4,7 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="506b0f64-1ddb-4db7-aef0-d0c91d75e696" name="Changes" comment="Consulta e Insertar de Piezas" />
+    <list default="true" id="506b0f64-1ddb-4db7-aef0-d0c91d75e696" name="Changes" comment="Consulta e Insertar de Piezas">
+      <change beforePath="$PROJECT_DIR$/.idea/CarAppBackend.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/CarAppBackend.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -71,7 +75,7 @@
     "Python.main.executor": "Run",
     "Python.mainConGraphQL.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "MrKettleburn",
+    "git-widget-placeholder": "master",
     "kotlin-language-version-configured": "true",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -236,7 +240,7 @@
     <SUITE FILE_PATH="coverage/CarAppBackend$Mutation.coverage" NAME="Mutation Coverage Results" MODIFIED="1729035982215" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/querys" />
     <SUITE FILE_PATH="coverage/CarAppBackend$CarAppBackend.coverage" NAME="CarAppBackend Coverage Results" MODIFIED="1729026534357" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/CarAppBackend$EmbeddingGenerator.coverage" NAME="EmbeddingGenerator Coverage Results" MODIFIED="1728803703316" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/embeddings" />
-    <SUITE FILE_PATH="coverage/CarAppBackend$main.coverage" NAME="main Coverage Results" MODIFIED="1729228847010" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/CarAppBackend$main.coverage" NAME="main Coverage Results" MODIFIED="1729234477621" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/CarAppBackend$MongoConection.coverage" NAME="MongoConection Coverage Results" MODIFIED="1728875776323" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/database" />
     <SUITE FILE_PATH="coverage/CarAppBackend$Query.coverage" NAME="Query Coverage Results" MODIFIED="1728965413638" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/querys" />
     <SUITE FILE_PATH="coverage/CarAppBackend$QdrantManager.coverage" NAME="QdrantManager Coverage Results" MODIFIED="1729031009156" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/embeddings" />
