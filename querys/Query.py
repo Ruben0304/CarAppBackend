@@ -83,3 +83,4 @@ class Query:
         # Paso 5: Convertir los documentos de MongoDB en objetos del tipo Carro y devolver la lista
         return [Carro(**car) for car in carros_data]
 
+
