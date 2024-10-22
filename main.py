@@ -23,7 +23,7 @@ async def root():
     return {"message": "Hello Worddd"}
 @app.get("/testDeploy")
 async def root():
-    return {"message": "1"} # Retorna un mensaje simple en formato JSON
+    return {"message": "2"} # Retorna un mensaje simple en formato JSON
 
 # Registrar la ruta para el servicio GraphQL usando el esquema que definimos
 # Habilitamos GraphiQL, una interfaz gráfica para hacer consultas GraphQL fácilmente
