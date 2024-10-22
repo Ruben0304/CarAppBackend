@@ -5,12 +5,12 @@ import strawberry
 from strawberry.fastapi import GraphQLRouter
 from typing import Any
 from database.MongoConection import get_database, db_connection
-from querys.Mutation import Mutation
+# from querys.Mutation import Mutation
 from querys.Query import Query
 
 # Crear el esquema de GraphQL
-schema = strawberry.Schema(query=Query, mutation=Mutation)
-
+# schema = strawberry.Schema(query=Query, mutation=Mutation)
+schema = strawberry.Schema(query=Query)
 # Crear la aplicación FastAPI
 app = FastAPI()
 

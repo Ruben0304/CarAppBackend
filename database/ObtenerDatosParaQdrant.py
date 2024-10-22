@@ -1,7 +1,7 @@
 # Extraer todos los documentos de MongoDB
 from bson import ObjectId
 
-from database.MongoConection import db
+db = []
 
 textos = []
 ids = []
