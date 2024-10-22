@@ -55,18 +55,21 @@ class Query:
         return [Carro(**car) for car in carros_data]
 
     # Resolver de la query 'piezas' para obtener una lista de piezas filtradas
+
+
+    # Resolver de la query 'piezas' para obtener una lista de piezas filtradas
     @strawberry.field
     async def piezas(self, tipo: Optional[str] = None, cantidad: Optional[int] = None) -> List[Pieza]:
         query = {}
 
-        # Si se proporciona un tipo, filtramos por el campo "tipo" usando una expresión regular
         if tipo:
             query["tipo"] = {"$regex": tipo, "$options": "i"}
 
-        # Realizamos la consulta en MongoDB y aplicamos el filtro si es necesario
-        piezas_data = await db.piezas.find(query).to_list(length=cantidad)
+        # Asegúrate de que `db.piezas` sea válido
+        if db is None:
+            raise ValueError("La conexión a la base de datos no está inicializada")
 
-        # Convertimos los documentos de MongoDB en instancias del modelo Pieza y los retornamos
+        piezas_data = await db.piezas.find(query).to_list(length=cantidad)
         return [Pieza(**p) for p in piezas_data]
 
 

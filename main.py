@@ -3,14 +3,14 @@ from fastapi.middleware.cors import CORSMiddleware
 import strawberry
 from strawberry.fastapi import GraphQLRouter
 from contextlib import asynccontextmanager
-from database.MongoConection import connect_to_mongo, close_mongo_connection,db  # Importamos las funciones para la conexión a MongoDB
+from database.MongoConection import connect_to_mongo, close_mongo_connection, db  # Importamos las funciones para la conexión a MongoDB
 from querys.Mutation import Mutation
 from querys.Query import Query
 
 # Gestor de contexto para el ciclo de vida de la aplicación
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    await connect_to_mongo()   # Inicializamos la conexión a MongoDB al arrancar
+    await connect_to_mongo()  # Inicializamos la conexión a MongoDB al arrancar
     yield
     await close_mongo_connection()  # Cerramos la conexión cuando la app se detiene
 
@@ -36,6 +36,10 @@ async def root():
 
 # Configurar el router de GraphQL con manejo de contexto
 async def get_context():
+    if db is None:
+        print("Error: No se ha inicializado la conexión a la base de datos.")
+    else:
+        print("Base de datos conectada correctamente.")
     return {
         "db": db  # Añadimos la base de datos al contexto, útil si la necesitas en los resolvers
     }
