@@ -1,57 +1,44 @@
-from fastapi import FastAPI
+# main.py
+from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
 import strawberry
 from strawberry.fastapi import GraphQLRouter
-from contextlib import asynccontextmanager
-from database.MongoConection import connect_to_mongo, close_mongo_connection, db  # Importamos las funciones para la conexión a MongoDB
+from typing import Any
+from database.MongoConection import get_database, db_connection
 from querys.Mutation import Mutation
 from querys.Query import Query
 
-# Gestor de contexto para el ciclo de vida de la aplicación
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    await connect_to_mongo()  # Inicializamos la conexión a MongoDB al arrancar
-    yield
-    await close_mongo_connection()  # Cerramos la conexión cuando la app se detiene
-
-# Crear el esquema de GraphQL con las Querys y Mutations
+# Crear el esquema de GraphQL
 schema = strawberry.Schema(query=Query, mutation=Mutation)
 
-# Crear la aplicación FastAPI con el gestor de ciclo de vida
-app = FastAPI(lifespan=lifespan)
+# Crear la aplicación FastAPI
+app = FastAPI()
 
 # Configurar CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # En producción, especifica los orígenes permitidos
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Endpoint raíz para verificar que el servidor está activo
 @app.get("/")
 async def root():
     return {"message": "Hello World"}
 
-# Configurar el router de GraphQL con manejo de contexto
-async def get_context():
-    if db is None:
-        print("Error: No se ha inicializado la conexión a la base de datos.")
-    else:
-        print("Base de datos conectada correctamente.")
-    return {
-        "db": db  # Añadimos la base de datos al contexto, útil si la necesitas en los resolvers
-    }
+# Función para obtener el contexto de GraphQL
+async def get_context() -> dict[str, Any]:
+    async with get_database() as database:
+        return {"db": database}
 
-# Router de GraphQL en la ruta /graphql
+# Configurar el router de GraphQL
 graphql_app = GraphQLRouter(
     schema,
     graphiql=True,
     context_getter=get_context
 )
 
-# Añadir el router a la app
 app.include_router(graphql_app, prefix="/graphql")
 
 if __name__ == "__main__":

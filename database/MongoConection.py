@@ -1,17 +1,29 @@
+# MongoConnection.py
 from motor.motor_asyncio import AsyncIOMotorClient
+from contextlib import asynccontextmanager
 
-# Variables globales para el cliente y la base de datos
-client = None
-db = None
+class DatabaseConnection:
+    def __init__(self):
+        self.client = None
+        self.db = None
 
-# Función para inicializar la conexión a MongoDB
-async def connect_to_mongo():
-    global client, db
-    client = AsyncIOMotorClient('mongodb+srv://ruben:zixelowe1@personal.yycznyk.mongodb.net/')
-    db = client['CarApp']  # Reemplaza 'CarApp' por el nombre de tu base de datos
+    async def connect(self):
+        self.client = AsyncIOMotorClient('mongodb+srv://ruben:zixelowe1@personal.yycznyk.mongodb.net/')
+        self.db = self.client['CarApp']
+        return self.db
 
-# Función para cerrar la conexión a MongoDB
-async def close_mongo_connection():
-    global client
-    if client:
-        client.close()
+    async def close(self):
+        if self.client:
+            self.client.close()
+
+# Crear una instancia global
+db_connection = DatabaseConnection()
+
+# Gestor de contexto para usar en FastAPI
+@asynccontextmanager
+async def get_database():
+    try:
+        await db_connection.connect()
+        yield db_connection.db
+    finally:
+        await db_connection.close()

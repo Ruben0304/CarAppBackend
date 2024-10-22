@@ -11,13 +11,25 @@ from models.Pieza import Pieza
 
 @strawberry.type
 class Query:
+    @strawberry.field
+    async def piezas(self, info, tipo: Optional[str] = None, cantidad: Optional[int] = None) -> List[Pieza]:
+        # Obtener la base de datos del contexto
+        db = info.context["db"]
+
+        query = {}
+        if tipo:
+            query["tipo"] = {"$regex": tipo, "$options": "i"}
+
+        piezas_data = await db.piezas.find(query).to_list(length=cantidad)
+        return [Pieza(**p) for p in piezas_data]
 
     # Consulta para obtener conversaciones, con tres parámetros:
     # 1. `id_mecanico` (opcional): permite filtrar las conversaciones por el mecánico.
     # 2. `cantidad` (opcional): limita la cantidad de conversaciones a devolver.
     # Si no se pasan parámetros, se devuelven todas las conversaciones.
     @strawberry.field
-    async def conversaciones(self, id_mecanico: Optional[str] = None, cantidad: Optional[int] = None) -> List[Conversacion]:
+    async def conversaciones(self, id_mecanico: Optional[str] = None, cantidad: Optional[int] = None) -> List[
+        Conversacion]:
         # Recuperamos los datos de la colección conversations en MongoDB
         filtro = {}
         if id_mecanico:
@@ -38,14 +50,12 @@ class Query:
 
         return conversaciones_list
 
-
-
     # Consulta para obtener carros, con dos parámetros:
     # 1. `precio_max` (opcional): filtra los carros cuyo precio de venta sea menor o igual a este valor.
     # 2. `cantidad` (opcional): limita la cantidad de carros a devolver.
     # Si no se pasan parámetros, se devuelven todos los carros.
     @strawberry.field
-    async def carros(self, cantidad: Optional[int] = None ) -> List[Carro]:
+    async def carros(self, cantidad: Optional[int] = None) -> List[Carro]:
         # Si se pasa un precio máximo, filtramos por carros cuyo precio de venta sea menor o igual.
         query = {}
         # Realizamos la consulta en MongoDB, aplicando el filtro si es necesario.
@@ -56,24 +66,7 @@ class Query:
 
     # Resolver de la query 'piezas' para obtener una lista de piezas filtradas
 
-
-    # Resolver de la query 'piezas' para obtener una lista de piezas filtradas
-    @strawberry.field
-    async def piezas(self, tipo: Optional[str] = None, cantidad: Optional[int] = None) -> List[Pieza]:
-        query = {}
-
-        if tipo:
-            query["tipo"] = {"$regex": tipo, "$options": "i"}
-
-        # Asegúrate de que `db.piezas` sea válido
-        if db is None:
-            raise ValueError("La conexión a la base de datos no está inicializada")
-
-        piezas_data = await db.piezas.find(query).to_list(length=cantidad)
-        return [Pieza(**p) for p in piezas_data]
-
-
-    #POR PROBAR AUN
+    # POR PROBAR AUN
     @strawberry.field
     async def search_carros(self, query: str) -> List[Carro]:
         # Paso 1: Vectorizar el texto de la consulta usando la función de la API de embedding
@@ -105,7 +98,6 @@ class Query:
 
         vector = vector_query.float_[0]
 
-
         search_result = qdrant_client.search(
             collection_name="mi_coleccion",  # Cambiar a la coleccion de piezas
             query_vector=vector,
@@ -120,5 +112,3 @@ class Query:
 
         # Paso 5: Convertir los documentos de MongoDB en objetos del tipo Carro y devolver la lista
         return [Pieza(**p) for p in piezas_data]
-
-
