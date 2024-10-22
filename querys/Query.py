@@ -63,7 +63,7 @@ class Query:
         # Realizamos la consulta en MongoDB, aplicando el filtro si es necesario.
         piezas_data = await db.piezas.find(query).to_list(length=cantidad)
 
-        return [Pieza(**p) for p in piezas_data]
+        return await [Pieza(**p) for p in piezas_data]
 
     #POR PROBAR AUN
     @strawberry.field

@@ -1,48 +1,71 @@
-# Importamos FastAPI para crear la aplicación web
 from fastapi import FastAPI
-
-# Importamos strawberry para definir el esquema de GraphQL
+from fastapi.middleware.cors import CORSMiddleware
 import strawberry
-
-# Importamos GraphQLRouter de strawberry.fastapi para integrar GraphQL con FastAPI
 from strawberry.fastapi import GraphQLRouter
-
+from contextlib import asynccontextmanager
+import asyncio
 from querys.Mutation import Mutation
-# Importamos la clase Query que contiene nuestras consultas (queries) de GraphQL
-from querys.Query import Query  # Asegúrate de que este archivo esté en la ruta correcta
+from querys.Query import Query
 
-# Crear el esquema de GraphQL usando la clase Query que define las consultas
+# Función para inicializar el estado de la aplicación
+async def init_app():
+    # Aquí puedes inicializar conexiones a bases de datos u otros recursos
+    pass
+
+# Función para cerrar recursos
+async def shutdown_app():
+    # Aquí puedes cerrar conexiones a bases de datos u otros recursos
+    pass
+
+# Gestor de contexto para el ciclo de vida de la aplicación
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Inicialización
+    await init_app()
+    yield
+    # Limpieza
+    await shutdown_app()
+
+# Crear el esquema de GraphQL
 schema = strawberry.Schema(query=Query, mutation=Mutation)
 
-# Crear la aplicación FastAPI
-app = FastAPI()
+# Crear la aplicación FastAPI con el gestor de ciclo de vida
+app = FastAPI(lifespan=lifespan)
 
-# Definir una ruta básica para verificar que el servidor esté funcionando
+# Configurar CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # En producción, especifica los orígenes permitidos
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 @app.get("/")
 async def root():
-    return {"message": "Hello Worddd"}
-@app.get("/testDeploy")
-async def root():
-    return {"message": "2"} # Retorna un mensaje simple en formato JSON
+    return {"message": "Hello World"}
 
-# Registrar la ruta para el servicio GraphQL usando el esquema que definimos
-# Habilitamos GraphiQL, una interfaz gráfica para hacer consultas GraphQL fácilmente
-graphql_app = GraphQLRouter(schema, graphiql=True)
+# Configurar el router de GraphQL con manejo de contexto
+async def get_context():
+    # Aquí puedes añadir objetos al contexto que necesites en tus resolvers
+    return {
+        "loop": asyncio.get_running_loop()
+    }
 
-# Incluimos la ruta de GraphQL bajo el prefijo "/graphql", es decir, cuando el usuario
-# navegue a /graphql, podrá hacer consultas GraphQL
+graphql_app = GraphQLRouter(
+    schema,
+    graphiql=True,
+    context_getter=get_context
+)
+
 app.include_router(graphql_app, prefix="/graphql")
 
-
-
-
 if __name__ == "__main__":
-    import asyncio
     import uvicorn
-
-    loop = asyncio.get_event_loop()
-    config = uvicorn.Config(app, host="0.0.0.0", port=8000,loop=loop)
-    server = uvicorn.Server(config)
-    loop.run_until_complete(server.serve())
-
-
+    uvicorn.run(
+        "main:app",
+        host="0.0.0.0",
+        port=8000,
+        reload=True,
+        loop="asyncio"
+    )
