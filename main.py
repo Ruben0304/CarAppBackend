@@ -4,7 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import strawberry
 from strawberry.fastapi import GraphQLRouter
 from typing import Any
-from database.MongoConection import get_database, db_connection
+from database.MongoConection import db_connection
 # from querys.Mutation import Mutation
 from querys.Query import Query
 
@@ -23,14 +23,17 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
+@app.on_event("startup")
+async def startup_db_client():
+    await db_connection.connect()
+
+@app.on_event("shutdown")
+async def shutdown_db_client():
+    await db_connection.close()
 
 # Función para obtener el contexto de GraphQL
 async def get_context() -> dict[str, Any]:
-    async with get_database() as database:
-        return {"db": database}
+    return {"db": db_connection.db}
 
 # Configurar el router de GraphQL
 graphql_app = GraphQLRouter(

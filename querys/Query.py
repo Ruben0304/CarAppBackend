@@ -13,15 +13,16 @@ class Query:
 
  @strawberry.field
  async def piezas(self, info, tipo: Optional[str] = None, cantidad: Optional[int] = None) -> List[Pieza]:
-    # Obtener la base de datos del contexto
-    db = info.context["db"]
+     db = info.context["db"]
+     if not db:
+         raise Exception("Database connection not initialized")
 
-    query = {}
-    if tipo:
-        query["tipo"] = {"$regex": tipo, "$options": "i"}
+     query = {}
+     if tipo:
+         query["tipo"] = {"$regex": tipo, "$options": "i"}
 
-    piezas_data = await db.piezas.find(query).to_list(length=cantidad)
-    return [Pieza(**p) for p in piezas_data]
+     piezas_data = await db.piezas.find(query).to_list(length=cantidad)
+     return [Pieza(**p) for p in piezas_data]
 
 
 # Consulta para obtener conversaciones, con tres parámetros:
