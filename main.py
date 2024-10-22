@@ -5,6 +5,7 @@ import strawberry
 from strawberry.fastapi import GraphQLRouter
 from typing import Any
 from database.MongoConection import db_connection
+import logging
 # from querys.Mutation import Mutation
 from querys.Query import Query
 
@@ -12,6 +13,9 @@ from querys.Query import Query
 # schema = strawberry.Schema(query=Query, mutation=Mutation)
 schema = strawberry.Schema(query=Query)
 # Crear la aplicación FastAPI
+# Configurar logging
+logging.basicConfig(level=logging.INFO)
+
 app = FastAPI()
 
 # Configurar CORS
@@ -25,15 +29,27 @@ app.add_middleware(
 
 @app.on_event("startup")
 async def startup_db_client():
-    await db_connection.connect()
+    try:
+        await db_connection.connect()
+        logging.info("Database connection established during startup")
+    except Exception as e:
+        logging.error(f"Failed to establish database connection during startup: {e}")
+        raise e
 
 @app.on_event("shutdown")
 async def shutdown_db_client():
     await db_connection.close()
 
+async def get_db():
+    db = await db_connection.get_db()
+    if not db:
+        raise Exception("Database connection not available")
+    return db
+
 # Función para obtener el contexto de GraphQL
 async def get_context() -> dict[str, Any]:
-    return {"db": db_connection.db}
+    db = await get_db()
+    return {"db": db}
 
 # Configurar el router de GraphQL
 graphql_app = GraphQLRouter(

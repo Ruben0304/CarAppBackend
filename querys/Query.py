@@ -4,6 +4,7 @@ from embeddings.QdrantManager import qdrant_client
 from models.Car import Carro, CarroInputUpdate
 from models.Conversation import Conversacion, Mensaje
 from typing import List, Optional
+import logging
 
 from models.Pieza import Pieza
 
@@ -11,18 +12,22 @@ from models.Pieza import Pieza
 @strawberry.type
 class Query:
 
- @strawberry.field
- async def piezas(self, info, tipo: Optional[str] = None, cantidad: Optional[int] = None) -> List[Pieza]:
-     db = info.context["db"]
-     if not db:
-         raise Exception("Database connection not initialized")
+    @strawberry.field
+    async def piezas(self, info, tipo: Optional[str] = None, cantidad: Optional[int] = None) -> List[Pieza]:
+        try:
+            db = info.context["db"]
+            if not db:
+                raise Exception("Database not available in context")
 
-     query = {}
-     if tipo:
-         query["tipo"] = {"$regex": tipo, "$options": "i"}
+            query = {}
+            if tipo:
+                query["tipo"] = {"$regex": tipo, "$options": "i"}
 
-     piezas_data = await db.piezas.find(query).to_list(length=cantidad)
-     return [Pieza(**p) for p in piezas_data]
+            piezas_data = await db.piezas.find(query).to_list(length=cantidad)
+            return [Pieza(**p) for p in piezas_data]
+        except Exception as e:
+            logging.error(f"Error in piezas query: {e}")
+            raise Exception(f"Failed to fetch piezas: {str(e)}")
 
 
 # Consulta para obtener conversaciones, con tres parámetros:
