@@ -54,16 +54,21 @@ class Query:
         # Convertimos los documentos de MongoDB a objetos del tipo Carro.
         return [Carro(**car) for car in carros_data]
 
+    # Resolver de la query 'piezas' para obtener una lista de piezas filtradas
     @strawberry.field
     async def piezas(self, tipo: Optional[str] = None, cantidad: Optional[int] = None) -> List[Pieza]:
         query = {}
+
+        # Si se proporciona un tipo, filtramos por el campo "tipo" usando una expresión regular
         if tipo:
             query["tipo"] = {"$regex": tipo, "$options": "i"}
 
-        # Realizamos la consulta en MongoDB, aplicando el filtro si es necesario.
+        # Realizamos la consulta en MongoDB y aplicamos el filtro si es necesario
         piezas_data = await db.piezas.find(query).to_list(length=cantidad)
 
+        # Convertimos los documentos de MongoDB en instancias del modelo Pieza y los retornamos
         return [Pieza(**p) for p in piezas_data]
+
 
     #POR PROBAR AUN
     @strawberry.field
