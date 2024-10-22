@@ -34,7 +34,12 @@ app.include_router(graphql_app, prefix="/graphql")
 
 
 if __name__ == "__main__":
+    import asyncio
     import uvicorn
 
-    # Arranca el servidor FastAPI en la dirección 127.0.0.1 (localhost) y el puerto 8080
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    loop = asyncio.get_event_loop()
+    config = uvicorn.Config(app, host="0.0.0.0", port=8000,loop=loop)
+    server = uvicorn.Server(config)
+    loop.run_until_complete(server.serve())
+
+
