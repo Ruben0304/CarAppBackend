@@ -13,37 +13,16 @@ from typing import List, Optional
 
 from models.Pieza import Pieza
 
-
-def handle_event_loop():
-    def decorator(func):
-        @wraps(func)
-        async def wrapper(*args, **kwargs):
-            try:
-                # Intentar obtener el event loop actual
-                loop = asyncio.get_running_loop()
-            except RuntimeError:
-                # Si no hay event loop, crear uno nuevo
-                loop = asyncio.new_event_loop()
-                asyncio.set_event_loop(loop)
-
-            try:
-                return await func(*args, **kwargs)
-            except Exception as e:
-                print(f"Error en la operación: {str(e)}")
-                raise
-        return wrapper
-    return decorator
-
 @strawberry.type
 class Query:
 
 
     @strawberry.field
-    async def conversaciones(self, id_mecanico: Optional[str] = None, cantidad: Optional[int] = None) -> List[Conversacion]:
+    def conversaciones(self, id_mecanico: Optional[str] = None, cantidad: Optional[int] = None) -> List[Conversacion]:
      filtro = {}
      if id_mecanico:
         filtro['id_mecanico'] = id_mecanico
-     conversaciones_data = await conversationsDB.find(filtro).to_list(length=cantidad)
+     conversaciones_data =  conversationsDB.find(filtro).to_list(length=cantidad)
     # Transformamos los diccionarios de 'conversation' en instancias de Mensaje
      conversaciones_list = []
      for conv in conversaciones_data:
