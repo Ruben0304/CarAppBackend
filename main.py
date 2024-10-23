@@ -27,17 +27,6 @@ async def root():
 
 
 
-
-
-
-@asynccontextmanager
-async def get_mongodb():
-    client = AsyncIOMotorClient("mongodb+srv://ruben:zixelowe1@personal.yycznyk.mongodb.net/")
-    try:
-        yield client
-    finally:
-        client.close()
-
 # Registrar la ruta para el servicio GraphQL usando el esquema que definimos
 # Habilitamos GraphiQL, una interfaz gráfica para hacer consultas GraphQL fácilmente
 graphql_app = GraphQLRouter(schema, graphiql=True)
