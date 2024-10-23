@@ -28,25 +28,7 @@ async def root():
 
 
 
-def handle_event_loop():
-    def decorator(func):
-        @wraps(func)
-        async def wrapper(*args, **kwargs):
-            try:
-                # Intentar obtener el event loop actual
-                loop = asyncio.get_running_loop()
-            except RuntimeError:
-                # Si no hay event loop, crear uno nuevo
-                loop = asyncio.new_event_loop()
-                asyncio.set_event_loop(loop)
 
-            try:
-                return await func(*args, **kwargs)
-            except Exception as e:
-                print(f"Error en la operación: {str(e)}")
-                raise
-        return wrapper
-    return decorator
 
 @asynccontextmanager
 async def get_mongodb():

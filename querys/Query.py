@@ -1,16 +1,38 @@
+import asyncio
+from functools import wraps
+
 import strawberry
 
 from database.MongoConection import conversationsDB, piezasDB
 from database.ObtenerDatosParaQdrant import db
 from embeddings.EmbeddingGenerator import embed_queries
 from embeddings.QdrantManager import qdrant_client
-from main import handle_event_loop
 from models.Car import Carro, CarroInputUpdate
 from models.Conversation import Conversacion, Mensaje
 from typing import List, Optional
 
 from models.Pieza import Pieza
 
+
+def handle_event_loop():
+    def decorator(func):
+        @wraps(func)
+        async def wrapper(*args, **kwargs):
+            try:
+                # Intentar obtener el event loop actual
+                loop = asyncio.get_running_loop()
+            except RuntimeError:
+                # Si no hay event loop, crear uno nuevo
+                loop = asyncio.new_event_loop()
+                asyncio.set_event_loop(loop)
+
+            try:
+                return await func(*args, **kwargs)
+            except Exception as e:
+                print(f"Error en la operación: {str(e)}")
+                raise
+        return wrapper
+    return decorator
 
 @strawberry.type
 class Query:
