@@ -8,6 +8,7 @@ import strawberry
 from strawberry.fastapi import GraphQLRouter
 
 from querys.Mutation import Mutation
+
 # Importamos la clase Query que contiene nuestras consultas (queries) de GraphQL
 from querys.Query import Query  # Asegúrate de que este archivo esté en la ruta correcta
 
@@ -33,8 +34,8 @@ app.include_router(graphql_app, prefix="/graphql")
 
 
 
-if __name__ == "__main__":
-    import uvicorn
-
-    # Arranca el servidor FastAPI en la dirección 127.0.0.1 (localhost) y el puerto 8080
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+# if __name__ == "__main__":
+#     import uvicorn
+#
+#     # Arranca el servidor FastAPI en la dirección 127.0.0.1 (localhost) y el puerto 8080
+#     uvicorn.run(app, host="0.0.0.0", port=8000)

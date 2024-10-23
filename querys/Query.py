@@ -24,7 +24,7 @@ class Query:
             filtro['id_mecanico'] = id_mecanico
 
         conversaciones_data = await db.conversations.find(filtro).to_list(length=cantidad)
-
+        db.client.close()
         # Transformamos los diccionarios de 'conversation' en instancias de Mensaje
         conversaciones_list = []
         for conv in conversaciones_data:
