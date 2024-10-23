@@ -265,7 +265,15 @@
       <option name="project" value="LOCAL" />
       <updated>1729645703414</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Consulta e Insertar de Piezas">
+      <option name="closed" value="true" />
+      <created>1729645836440</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1729645836440</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -289,6 +297,6 @@
     <SUITE FILE_PATH="coverage/CarAppBackend$ObtenerDatosParaQdrant.coverage" NAME="ObtenerDatosParaQdrant Coverage Results" MODIFIED="1729026524422" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/database" />
     <SUITE FILE_PATH="coverage/CarAppBackend$Mutation.coverage" NAME="Mutation Coverage Results" MODIFIED="1729035982215" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/querys" />
     <SUITE FILE_PATH="coverage/CarAppBackend$main.coverage" NAME="main Coverage Results" MODIFIED="1729641791155" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/CarAppBackend$CarAppBackend.coverage" NAME="CarAppBackend Coverage Results" MODIFIED="1729644910575" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/CarAppBackend$CarAppBackend.coverage" NAME="CarAppBackend Coverage Results" MODIFIED="1729645822860" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
   </component>
 </project>

@@ -1,4 +1,6 @@
 # Importamos FastAPI para crear la aplicación web
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 
 # Importamos strawberry para definir el esquema de GraphQL
@@ -16,18 +18,15 @@ from querys.Query import Query  # Asegúrate de que este archivo esté en la rut
 # Crear el esquema de GraphQL usando la clase Query que define las consultas
 schema = strawberry.Schema(query=Query, mutation=Mutation)
 
-# Crear la aplicación FastAPI
-app = FastAPI()
-
 # Definir una ruta básica para verificar que el servidor esté funcionando
 
-@app.on_event("startup")
-async def startup_db_client():
+@asynccontextmanager
+async def lifespan(app: FastAPI):
     await init_db()
-
-@app.on_event("shutdown")
-async def shutdown_db_client():
+    yield
     await close_db()
+
+app = FastAPI(lifespan=lifespan)
 @app.get("/")
 async def root():
     return {"message": "Hello Worddd"}  # Retorna un mensaje simple en formato JSON
