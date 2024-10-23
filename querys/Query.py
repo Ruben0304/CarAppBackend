@@ -20,6 +20,7 @@ class Query:
      if id_mecanico:
         filtro['id_mecanico'] = id_mecanico
      conversaciones_data = await mongodb.conversations.find(filtro).to_list(length=cantidad)
+     mongodb.close()
     # Transformamos los diccionarios de 'conversation' en instancias de Mensaje
      conversaciones_list = []
      for conv in conversaciones_data:
