@@ -118,7 +118,7 @@ def get_database():
 
 @app.get("/cars")
 async def get_cars(db=Depends(get_database)):
-    cars = await db.cars.find().to_list(100)
+    cars = await db.carros.find().to_list(100)
     return [Car(**car) for car in cars]
 
 @app.post("/cars")
