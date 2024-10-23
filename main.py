@@ -32,9 +32,17 @@ graphql_app = GraphQLRouter(schema, graphiql=True)
 # navegue a /graphql, podrá hacer consultas GraphQL
 app.include_router(graphql_app, prefix="/graphql")
 
+def create_new_event_loop():
+    loop = asyncio.get_event_loop()
+    if loop.is_closed():
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+    return loop
+
 def start_server():
     import uvicorn
-    asyncio.run(uvicorn.run(app, host="0.0.0.0", port=8000))
+    loop = create_new_event_loop()
+    loop.run_until_complete(uvicorn.run(app, host="0.0.0.0", port=8000))
 
 if __name__ == '__main__':
     start_server()
