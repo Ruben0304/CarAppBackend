@@ -36,7 +36,7 @@ class DatabaseConnection:
         return self.db
 
     async def close(self):
-        if self.client:
+        if self.client is not None:
             self.client.close()
             self.client = None
             self.db = None

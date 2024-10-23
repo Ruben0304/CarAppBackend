@@ -5,6 +5,7 @@ from models.Car import Carro, CarroInputUpdate
 from models.Conversation import Conversacion, Mensaje
 from typing import List, Optional
 import logging
+from database.MongoConection import db_connection
 
 from models.Pieza import Pieza
 
@@ -16,7 +17,7 @@ class Query:
     async def piezas(self, info, tipo: Optional[str] = None, cantidad: Optional[int] = None) -> List[Pieza]:
         try:
             db = info.context["db"]
-            if not db:
+            if db_connection.is_connected is False:
                 raise Exception("Database not available in context")
 
             query = {}

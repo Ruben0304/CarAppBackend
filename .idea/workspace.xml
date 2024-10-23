@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="506b0f64-1ddb-4db7-aef0-d0c91d75e696" name="Changes" comment="Consulta e Insertar de Piezas" />
+    <list default="true" id="506b0f64-1ddb-4db7-aef0-d0c91d75e696" name="Changes" comment="Consulta e Insertar de Piezas">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/MongoConection.py" beforeDir="false" afterPath="$PROJECT_DIR$/database/MongoConection.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -338,7 +341,15 @@
       <option name="project" value="LOCAL" />
       <updated>1729641011129</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="Consulta e Insertar de Piezas">
+      <option name="closed" value="true" />
+      <created>1729641262112</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1729641262112</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -362,6 +373,6 @@
     <SUITE FILE_PATH="coverage/CarAppBackend$ObtenerDatosParaQdrant.coverage" NAME="ObtenerDatosParaQdrant Coverage Results" MODIFIED="1729026524422" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/database" />
     <SUITE FILE_PATH="coverage/CarAppBackend$Mutation.coverage" NAME="Mutation Coverage Results" MODIFIED="1729035982215" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/querys" />
     <SUITE FILE_PATH="coverage/CarAppBackend$CarAppBackend.coverage" NAME="CarAppBackend Coverage Results" MODIFIED="1729026534357" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
-    <SUITE FILE_PATH="coverage/CarAppBackend$main.coverage" NAME="main Coverage Results" MODIFIED="1729640676130" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/CarAppBackend$main.coverage" NAME="main Coverage Results" MODIFIED="1729641202906" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
