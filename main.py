@@ -8,7 +8,6 @@ import strawberry
 from strawberry.fastapi import GraphQLRouter
 
 from querys.Mutation import Mutation
-
 # Importamos la clase Query que contiene nuestras consultas (queries) de GraphQL
 from querys.Query import Query  # Asegúrate de que este archivo esté en la ruta correcta
 
