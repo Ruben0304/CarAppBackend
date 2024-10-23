@@ -1,6 +1,6 @@
 import strawberry
 
-from database.MongoConection import db
+from database.ObtenerDatosParaQdrant import db
 from embeddings.QdrantManager import obtenerEmbedingsDeCarroInsertadoEInsertar, \
     obtenerEmbedingsDePiezaInsertadoEInsertar
 from models.Car import Carro, CarroInputUpdate
