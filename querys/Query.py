@@ -1,6 +1,6 @@
 import strawberry
 
-from database.MongoConection import  conversationsDB
+from database.MongoConection import conversationsDB, piezasDB
 from database.ObtenerDatosParaQdrant import db
 from embeddings.EmbeddingGenerator import embed_queries
 from embeddings.QdrantManager import qdrant_client
@@ -20,7 +20,7 @@ class Query:
      filtro = {}
      if id_mecanico:
         filtro['id_mecanico'] = id_mecanico
-     conversaciones_data = conversationsDB.find(filtro).to_list(length=cantidad)
+     conversaciones_data = await conversationsDB.find(filtro).to_list(length=cantidad)
     # Transformamos los diccionarios de 'conversation' en instancias de Mensaje
      conversaciones_list = []
      for conv in conversaciones_data:
@@ -56,7 +56,7 @@ class Query:
             query["tipo"] = {"$regex": tipo, "$options": "i"}
 
         # Realizamos la consulta en MongoDB, aplicando el filtro si es necesario.
-        piezas_data = await db.piezas.find(query).to_list(length=cantidad)
+        piezas_data = await piezasDB.find(query).to_list(length=cantidad)
 
         return [Pieza(**p) for p in piezas_data]
 
