@@ -3,7 +3,7 @@ from functools import wraps
 
 import strawberry
 
-from database.MongoConection import conversationsDB, piezasDB
+from database.MongoConection import conversationsDB, piezasDB, get_mongodb
 from database.ObtenerDatosParaQdrant import db
 from embeddings.EmbeddingGenerator import embed_queries
 from embeddings.QdrantManager import qdrant_client
@@ -41,13 +41,16 @@ class Query:
     @strawberry.field
     @handle_event_loop()
     async def conversaciones(self, id_mecanico: Optional[str] = None, cantidad: Optional[int] = None) -> List[Conversacion]:
-     filtro = {}
-     if id_mecanico:
+     async with get_mongodb() as client:
+      database =  client.CarApp
+      conversationsDB = database.get_collection("conversations")
+      filtro = {}
+      if id_mecanico:
         filtro['id_mecanico'] = id_mecanico
-     conversaciones_data = await conversationsDB.find(filtro).to_list(length=cantidad)
-    # Transformamos los diccionarios de 'conversation' en instancias de Mensaje
-     conversaciones_list = []
-     for conv in conversaciones_data:
+      conversaciones_data = await conversationsDB.find(filtro).to_list(length=cantidad)
+      # Transformamos los diccionarios de 'conversation' en instancias de Mensaje
+      conversaciones_list = []
+      for conv in conversaciones_data:
         mensajes = [Mensaje(**msg) for msg in conv['conversation']]
         conversaciones_list.append(Conversacion(
             _id=conv['_id'],
@@ -55,7 +58,7 @@ class Query:
             id_usuario=conv['id_usuario'],
             conversation=mensajes
         ))
-     return conversaciones_list
+      return conversaciones_list
 
 
 
