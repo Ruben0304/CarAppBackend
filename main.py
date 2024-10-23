@@ -42,7 +42,7 @@ def create_new_event_loop():
 def start_server():
     import uvicorn
     loop = create_new_event_loop()
-    loop.run_until_complete(uvicorn.run(app, host="0.0.0.0", port=8000))
+    loop.run_until_complete(uvicorn.run(app))
 
 if __name__ == '__main__':
     start_server()
