@@ -289,7 +289,15 @@
       <option name="project" value="LOCAL" />
       <updated>1729646622688</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="Consulta e Insertar de Piezas">
+      <option name="closed" value="true" />
+      <created>1729646781056</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1729646781056</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

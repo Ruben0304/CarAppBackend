@@ -9,8 +9,6 @@ from motor.motor_asyncio import AsyncIOMotorClient
 
 # Importamos GraphQLRouter de strawberry.fastapi para integrar GraphQL con FastAPI
 from strawberry.fastapi import GraphQLRouter
-
-from database.MongoConection import init_db, close_db
 from querys.Mutation import Mutation
 # Importamos la clase Query que contiene nuestras consultas (queries) de GraphQL
 from querys.Query import Query  # Asegúrate de que este archivo esté en la ruta correcta
@@ -18,15 +16,9 @@ from querys.Query import Query  # Asegúrate de que este archivo esté en la rut
 # Crear el esquema de GraphQL usando la clase Query que define las consultas
 schema = strawberry.Schema(query=Query, mutation=Mutation)
 
-# Definir una ruta básica para verificar que el servidor esté funcionando
+# Definir una ruta básica para verificar que el servidor esté funciona
 
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    await init_db()
-    yield
-    await close_db()
-
-app = FastAPI(lifespan=lifespan)
+app = FastAPI()
 @app.get("/")
 async def root():
     return {"message": "Hello Worddd"}  # Retorna un mensaje simple en formato JSON
