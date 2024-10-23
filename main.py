@@ -1,4 +1,5 @@
 # Importamos FastAPI para crear la aplicación web
+import asyncio
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
@@ -31,9 +32,12 @@ graphql_app = GraphQLRouter(schema, graphiql=True)
 # navegue a /graphql, podrá hacer consultas GraphQL
 app.include_router(graphql_app, prefix="/graphql")
 
+def start_server():
+    import uvicorn
+    asyncio.run(uvicorn.run(app, host="0.0.0.0", port=8000))
 
-
-
+if __name__ == '__main__':
+    start_server()
 # if __name__ == "__main__":
 #     import uvicorn
 #
