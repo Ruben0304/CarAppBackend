@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="506b0f64-1ddb-4db7-aef0-d0c91d75e696" name="Changes" comment="Consulta e Insertar de Piezas" />
+    <list default="true" id="506b0f64-1ddb-4db7-aef0-d0c91d75e696" name="Changes" comment="Consulta e Insertar de Piezas">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -464,7 +466,23 @@
       <option name="project" value="LOCAL" />
       <updated>1729653819971</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="Consulta e Insertar de Piezas">
+      <option name="closed" value="true" />
+      <created>1729654153260</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1729654153260</updated>
+    </task>
+    <task id="LOCAL-00037" summary="Consulta e Insertar de Piezas">
+      <option name="closed" value="true" />
+      <created>1729654213310</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1729654213310</updated>
+    </task>
+    <option name="localTasksCounter" value="38" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
