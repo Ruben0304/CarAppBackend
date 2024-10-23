@@ -13,11 +13,11 @@ from models.Pieza import Pieza
 
 @strawberry.type
 class Query:
-    db = MongoDB.get_database()
+
 
     @strawberry.field
     async def conversaciones(self, id_mecanico: Optional[str] = None, cantidad: Optional[int] = None) -> List[Conversacion]:
-     # Recuperamos los datos de la colección conversations en MongoDB
+     db = await MongoDB.get_database()
      filtro = {}
      if id_mecanico:
         filtro['id_mecanico'] = id_mecanico
@@ -32,6 +32,7 @@ class Query:
             id_usuario=conv['id_usuario'],
             conversation=mensajes
         ))
+     await db.close()
      return conversaciones_list
 
 
