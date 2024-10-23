@@ -2,12 +2,11 @@
 import asyncio
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI,Request
+from fastapi import FastAPI
 
 # Importamos strawberry para definir el esquema de GraphQL
 import strawberry
 from motor.motor_asyncio import AsyncIOMotorClient
-from starlette.middleware.base import BaseHTTPMiddleware
 
 # Importamos GraphQLRouter de strawberry.fastapi para integrar GraphQL con FastAPI
 from strawberry.fastapi import GraphQLRouter
@@ -33,20 +32,9 @@ graphql_app = GraphQLRouter(schema, graphiql=True)
 # navegue a /graphql, podrá hacer consultas GraphQL
 app.include_router(graphql_app, prefix="/graphql")
 
-class AsyncioMiddleware(BaseHTTPMiddleware):
-    async def dispatch(self, request: Request, call_next):
-        loop = asyncio.get_event_loop()
-        if loop.is_closed():
-            loop = asyncio.new_event_loop()
-            asyncio.set_event_loop(loop)
-        response = await call_next(request)
-        return response
-
-app.add_middleware(AsyncioMiddleware)
-
 def start_server():
     import uvicorn
-    uvicorn.run(app)
+    asyncio.run(uvicorn.run(app))
 
 if __name__ == '__main__':
     start_server()
