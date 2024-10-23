@@ -1,6 +1,7 @@
 # Importamos FastAPI para crear la aplicación web
 import asyncio
 from contextlib import asynccontextmanager
+from functools import wraps
 
 from fastapi import FastAPI
 
@@ -24,12 +25,44 @@ app = FastAPI()
 async def root():
     return {"message": "Hello Worddd"}  # Retorna un mensaje simple en formato JSON
 
+
+
+
+def handle_event_loop():
+    def decorator(func):
+        @wraps(func)
+        async def wrapper(*args, **kwargs):
+            try:
+                # Intentar obtener el event loop actual
+                loop = asyncio.get_running_loop()
+            except RuntimeError:
+                # Si no hay event loop, crear uno nuevo
+                loop = asyncio.new_event_loop()
+                asyncio.set_event_loop(loop)
+
+            try:
+                return await func(*args, **kwargs)
+            except Exception as e:
+                print(f"Error en la operación: {str(e)}")
+                raise
+        return wrapper
+    return decorator
+
+@asynccontextmanager
+async def get_mongodb():
+    client = AsyncIOMotorClient("mongodb+srv://ruben:zixelowe1@personal.yycznyk.mongodb.net/")
+    try:
+        yield client
+    finally:
+        client.close()
+
 # Registrar la ruta para el servicio GraphQL usando el esquema que definimos
 # Habilitamos GraphiQL, una interfaz gráfica para hacer consultas GraphQL fácilmente
 graphql_app = GraphQLRouter(schema, graphiql=True)
 
 # Incluimos la ruta de GraphQL bajo el prefijo "/graphql", es decir, cuando el usuario
 # navegue a /graphql, podrá hacer consultas GraphQL
+
 app.include_router(graphql_app, prefix="/graphql")
 
 def start_server():

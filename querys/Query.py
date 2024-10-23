@@ -4,6 +4,7 @@ from database.MongoConection import conversationsDB, piezasDB
 from database.ObtenerDatosParaQdrant import db
 from embeddings.EmbeddingGenerator import embed_queries
 from embeddings.QdrantManager import qdrant_client
+from main import handle_event_loop
 from models.Car import Carro, CarroInputUpdate
 from models.Conversation import Conversacion, Mensaje
 from typing import List, Optional
@@ -16,6 +17,7 @@ class Query:
 
 
     @strawberry.field
+    @handle_event_loop()
     async def conversaciones(self, id_mecanico: Optional[str] = None, cantidad: Optional[int] = None) -> List[Conversacion]:
      filtro = {}
      if id_mecanico:
