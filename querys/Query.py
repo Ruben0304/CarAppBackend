@@ -1,5 +1,6 @@
 import strawberry
-from database.MongoConection import db
+from database.MongoConection import  mongodb
+from database.ObtenerDatosParaQdrant import db
 from embeddings.EmbeddingGenerator import embed_queries
 from embeddings.QdrantManager import qdrant_client
 from models.Car import Carro, CarroInputUpdate
@@ -12,31 +13,24 @@ from models.Pieza import Pieza
 @strawberry.type
 class Query:
 
-    # Consulta para obtener conversaciones, con tres parámetros:
-    # 1. `id_mecanico` (opcional): permite filtrar las conversaciones por el mecánico.
-    # 2. `cantidad` (opcional): limita la cantidad de conversaciones a devolver.
-    # Si no se pasan parámetros, se devuelven todas las conversaciones.
     @strawberry.field
     async def conversaciones(self, id_mecanico: Optional[str] = None, cantidad: Optional[int] = None) -> List[Conversacion]:
-        # Recuperamos los datos de la colección conversations en MongoDB
-        filtro = {}
-        if id_mecanico:
-            filtro['id_mecanico'] = id_mecanico
-
-        conversaciones_data = await db.conversations.find(filtro).to_list(length=cantidad)
-        db.client.close()
-        # Transformamos los diccionarios de 'conversation' en instancias de Mensaje
-        conversaciones_list = []
-        for conv in conversaciones_data:
-            mensajes = [Mensaje(**msg) for msg in conv['conversation']]
-            conversaciones_list.append(Conversacion(
-                _id=conv['_id'],
-                id_mecanico=conv['id_mecanico'],
-                id_usuario=conv['id_usuario'],
-                conversation=mensajes
-            ))
-
-        return conversaciones_list
+     # Recuperamos los datos de la colección conversations en MongoDB
+     filtro = {}
+     if id_mecanico:
+        filtro['id_mecanico'] = id_mecanico
+     conversaciones_data = await mongodb.conversations.find(filtro).to_list(length=cantidad)
+    # Transformamos los diccionarios de 'conversation' en instancias de Mensaje
+     conversaciones_list = []
+     for conv in conversaciones_data:
+        mensajes = [Mensaje(**msg) for msg in conv['conversation']]
+        conversaciones_list.append(Conversacion(
+            _id=conv['_id'],
+            id_mecanico=conv['id_mecanico'],
+            id_usuario=conv['id_usuario'],
+            conversation=mensajes
+        ))
+     return conversaciones_list
 
 
 
