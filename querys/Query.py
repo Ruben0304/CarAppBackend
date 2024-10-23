@@ -1,5 +1,6 @@
 import strawberry
-from database.MongoConection import  mongodb
+
+from database.MongoConection import MongoDB
 from database.ObtenerDatosParaQdrant import db
 from embeddings.EmbeddingGenerator import embed_queries
 from embeddings.QdrantManager import qdrant_client
@@ -12,6 +13,7 @@ from models.Pieza import Pieza
 
 @strawberry.type
 class Query:
+    db = MongoDB.get_database()
 
     @strawberry.field
     async def conversaciones(self, id_mecanico: Optional[str] = None, cantidad: Optional[int] = None) -> List[Conversacion]:
@@ -19,8 +21,7 @@ class Query:
      filtro = {}
      if id_mecanico:
         filtro['id_mecanico'] = id_mecanico
-     conversaciones_data = await mongodb.conversations.find(filtro).to_list(length=cantidad)
-     mongodb.close()
+     conversaciones_data = await db.conversations.find(filtro).to_list(length=cantidad)
     # Transformamos los diccionarios de 'conversation' en instancias de Mensaje
      conversaciones_list = []
      for conv in conversaciones_data:
