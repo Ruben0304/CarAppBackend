@@ -2,6 +2,7 @@ package com.example.implementations.dao
 
 import com.example.enums.PineconeCollections
 import com.example.models.Carro
+import com.example.models.Pieza
 import com.example.services.VectorialSearchService
 import com.example.services.dao.CarroService
 import com.mongodb.client.MongoDatabase
@@ -59,8 +60,9 @@ class CarroServiceImpl : CarroService, KoinComponent {
         collection.findOneAndDelete(Filters.eq("_id", ObjectId(id)))
     }
 
-    override suspend fun findMany(ids: List<String>): List<Carro> {
-        TODO("Not yet implemented")
+    override suspend fun findMany(ids: List<String>): List<Carro> = withContext(Dispatchers.IO) {
+        val objectIdList = ids.map { ObjectId(it) }
+        collection.find(Filters.`in`("_id", objectIdList)).map(Carro::fromDocument).toList()
     }
 
 
