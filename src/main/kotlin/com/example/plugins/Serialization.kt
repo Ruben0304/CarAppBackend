@@ -7,6 +7,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
 import kotlinx.serialization.KSerializer
+import kotlinx.serialization.SerializationException
 import kotlinx.serialization.descriptors.PrimitiveKind
 import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
 import kotlinx.serialization.descriptors.SerialDescriptor
@@ -72,19 +73,27 @@ object MongoDBTimestampSerializer : KSerializer<Instant> {
     override val descriptor: SerialDescriptor =
         PrimitiveSerialDescriptor("MongoDBTimestamp", PrimitiveKind.STRING)
 
-    override fun serialize(
-        encoder: Encoder,
-        value: Instant
-    ) {
-        encoder.encodeString(value.toString())
+    override fun serialize(encoder: Encoder, value: Instant) {
+        // Serializar el Instant como un objeto JSON con el formato que MongoDB espera
+        val jsonEncoder = encoder as? JsonEncoder
+            ?: throw IllegalStateException("This serializer can be used only with Json format")
+
+        val jsonObject = buildJsonObject {
+            put("\$date", value.toString())
+        }
+
+        jsonEncoder.encodeJsonElement(jsonObject)
     }
 
     override fun deserialize(decoder: Decoder): Instant {
         val jsonDecoder = decoder as? JsonDecoder
             ?: throw IllegalStateException("This serializer can be used only with Json format")
+
         val jsonElement = jsonDecoder.decodeJsonElement()
-        val jsonObject = jsonElement.jsonObject
-        val date = jsonObject["\$date"]?.jsonPrimitive?.content
-        return Instant.parse(date)
+
+        val dateString = jsonElement.jsonObject["\$date"]?.jsonPrimitive?.content
+            ?: throw SerializationException("Expected '\$date' field in JSON")
+
+        return Instant.parse(dateString)
     }
 }

@@ -27,12 +27,25 @@ data class Chat(
     @Serializable(with = MongoDBTimestampSerializer::class)
     val updatedAt: Instant
 ) {
-    fun toDocument(): Document = Document.parse(Json.encodeToString(this))
-
+    fun toDocument(): Document {
+        return Document().apply {
+            put("_id", id) // Asegura que el ID se almacene como ObjectId
+            put("participants", participants.map { it.toDocument() }) // Convertir cada participante
+            put("messages", messages.map { it.toDocument() }) // Convertir mensajes
+            put("lastMessage", lastMessage?.toDocument()) // Convertir lastMessage si no es nulo
+            put("updatedAt", updatedAt) // Guardar Instant como timestamp
+        }
+    }
     companion object {
-        private val json = Json { ignoreUnknownKeys = true }
-
-        fun fromDocument(document: Document): Chat = json.decodeFromString(document.toJson())
+        fun fromDocument(document: Document): Chat {
+            return Chat(
+                id = document.getObjectId("_id"), // Recupera el ID como ObjectId
+                participants = (document["participants"] as List<Document>).map { Participant.fromDocument(it) },
+                messages = (document["messages"] as List<Document>).map { Message.fromDocument(it) },
+                lastMessage = document.get("lastMessage")?.let { LastMessage.fromDocument(it as Document) },
+                updatedAt = document.getDate("updatedAt")?.toInstant() ?: Instant.now(), // Convertir timestamp a Instant
+            )
+        }
     }
 }
 
@@ -45,7 +58,25 @@ data class Participant(
     val username: String,
     @SerialName("displayName")
     val displayName: String
-)
+){
+    fun toDocument(): Document {
+        return Document().apply {
+            put("userId", userId) // Mantiene ObjectId
+            put("username", username)
+            put("displayName", displayName)
+        }
+    }
+
+    companion object {
+        fun fromDocument(document: Document): Participant {
+            return Participant(
+                userId = document.getObjectId("userId"),
+                username = document.getString("username"),
+                displayName = document.getString("displayName")
+            )
+        }
+    }
+}
 
 @Serializable
 data class LastMessage(
@@ -57,12 +88,22 @@ data class LastMessage(
     @BsonId
     val senderId: ObjectId = ObjectId()
 ){
-    fun toDocument(): Document = Document.parse(Json.encodeToString(this))
+    fun toDocument(): Document {
+        return Document().apply {
+            put("content", content)
+            put("timestamp", timestamp) // Guardar como timestamp
+            put("senderId", senderId) // Mantener ObjectId
+        }
+    }
 
     companion object {
-        private val json = Json { ignoreUnknownKeys = true }
-
-        fun fromDocument(document: Document): LastMessage = json.decodeFromString(document.toJson())
+        fun fromDocument(document: Document): LastMessage {
+            return LastMessage(
+                content = document.getString("content"),
+                timestamp = document.getDate("timestamp")?.toInstant() ?: Instant.now(),
+                senderId = document.getObjectId("senderId")
+            )
+        }
     }
 }
 

@@ -1,11 +1,14 @@
 package com.example.routes
 
 import com.example.models.Chat
+import com.example.models.Message
+import com.example.models.Participant
 
 import com.example.models.Response
 import com.example.routes.definitions.Chats
 
 import com.example.services.dao.ConversationService
+import com.example.services.dao.MessageService
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
@@ -13,11 +16,13 @@ import io.ktor.server.resources.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import org.koin.ktor.ext.inject
+import io.ktor.server.routing.post
 
 
 fun Application.chatsRoutes() {
 
     val chatService: ConversationService by inject()
+    val messageService: MessageService by inject()
 
     routing {
         // Get all chatss
@@ -32,7 +37,6 @@ fun Application.chatsRoutes() {
                 )
             }
         }
-
 
         get<Chats.Search> { params ->
             try {
@@ -75,6 +79,19 @@ fun Application.chatsRoutes() {
             }
         }
 
+        // Get last incoming chat messages
+        get<Chats.LastMessages> { params ->
+            try {
+                chatService.getLastMessages(params.timestamp,params.userId).let { chats ->
+                    call.respond(Response.success(chats))
+                }
+            } catch (e: Exception) {
+                call.respond(
+                    HttpStatusCode.InternalServerError,
+                    Response.error(e.message ?: "Error retrieving chats")
+                )
+            }
+        }
 
         // Delete chats
         delete<Chats.Id> { params ->

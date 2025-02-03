@@ -2,5 +2,20 @@
 GET http://127.0.0.1:8080/piezas/search?query=pastillas de freno
 
 ###
-GET http://127.0.0.1:8080/chats/user?id=65b1a1b1c1d1e1f1a1b1c1d1
+GET http://127.0.0.1:8080/chats/user/?id=65b1a1b1c1d1e1f1a1b1c1d1
 ###
+GET http://127.0.0.1:8080/messages/chat?chatId=507f1f77bcf86cd799439011
+
+### Enviar un mensaje entre dos participantes
+POST http://127.0.0.1:8080/messages
+Content-Type: application/json
+
+{
+  "senderId": "65b1a1b1c1d1e1f1a1b1c1d5",
+  "receiverId": "65b1a1b1c1d1e1f1a1b1c1d6",
+  "message": {
+    "senderId": "65b1a1b1c1d1e1f1a1b1c1d5",
+    "content": "Hola, ¿cómo estás?",
+    "timestamp": "2025-02-02T12:00:00Z"
+  }
+}

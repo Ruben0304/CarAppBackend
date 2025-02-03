@@ -1,7 +1,9 @@
 package com.example.routes.definitions
 
+import com.example.models.Message
 import io.ktor.resources.*
 import kotlinx.serialization.Serializable
+import java.time.Instant
 
 
 @Serializable
@@ -30,6 +32,18 @@ class Chats {
     @Serializable
     @Resource("{id}")
     data class Id(val parent: Chats = Chats(), val id: String)
+
+    @Serializable
+    @Resource("last_messages")
+    data class LastMessages(val parent: Chats = Chats(), val timestamp: String, val userId: String)
+
+}
+@Serializable
+@Resource("/messages")
+class Messages{
+    @Serializable
+    @Resource("chat")
+    data class Chat(val parent: Messages = Messages(), val chatId: String)
 }
 
 @Serializable

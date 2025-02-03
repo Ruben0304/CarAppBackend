@@ -14,13 +14,22 @@ import org.koin.core.component.inject
 
 class CarroServiceImpl : CarroService, KoinComponent {
     private val database: MongoDatabase by inject()
-    private val collection = database.getCollection("carros")
+    private val collection = database.getCollection("cars")
 
     // List of Carros
     override suspend fun all(): List<Carro> = withContext(Dispatchers.IO) {
-        collection.find().map { document ->
-            Carro.fromDocument(document)
-        }.toList()
+        try{
+            collection.find().map { document ->
+                try {
+                    val carro = Carro.fromDocument(document)
+                    carro
+                }catch (e: Exception){
+                    throw e
+                }
+            }.toList()
+        } catch (e: Exception){
+            throw e
+        }
     }
 
 

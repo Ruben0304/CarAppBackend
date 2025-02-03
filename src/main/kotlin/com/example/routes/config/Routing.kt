@@ -1,9 +1,6 @@
 package com.example.routes.config
 
-import com.example.routes.authRoutes
-import com.example.routes.carrosRoutes
-import com.example.routes.chatsRoutes
-import com.example.routes.piezasRoutes
+import com.example.routes.*
 import io.ktor.server.application.*
 import io.ktor.server.resources.*
 import io.ktor.server.response.*
@@ -21,6 +18,7 @@ fun Application.configureRouting() {
     carrosRoutes()
     chatsRoutes()
     authRoutes()
+    messagesRoutes()
 }
 
 

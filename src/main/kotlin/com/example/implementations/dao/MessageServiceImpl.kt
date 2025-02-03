@@ -20,20 +20,15 @@ class MessageServiceImpl : MessageService, KoinComponent {
     private val collection = database.getCollection(MongoCollections.CHATS.value)
 
     override suspend fun getMessagesByConversationId(
-        conversationId: String,
-        page: Int,
-        pageSize: Int
+        conversationId: String
     ): List<Message> = withContext(Dispatchers.IO) {
-        val skip = page * pageSize
 
         collection.find(Filters.eq("_id", ObjectId(conversationId)))
-            .projection(Projections.slice("messages",1))
+
             .first()
             ?.get("messages", List::class.java)
             ?.map { Message.fromDocument(it as Document) }
-            ?.sortedByDescending { it.timestamp }
-            ?.drop(skip)
-//            ?.take(pageSize)
+//            ?.sortedByDescending { it.timestamp }
             ?: emptyList()
     }
 
@@ -49,7 +44,7 @@ class MessageServiceImpl : MessageService, KoinComponent {
             )
         )
 
-        messageDoc.getObjectId("messageId").toString()
+        message.messageId.toString()
     }
 
     override suspend fun markAsRead(
@@ -126,8 +121,10 @@ class MessageServiceImpl : MessageService, KoinComponent {
             .toList()
     }
 
-    override suspend fun create(item: Message): String {
-        TODO("Not yet implemented")
+    override suspend fun create(item: Message): String  = withContext(Dispatchers.IO)  {
+        val message = item.toDocument()
+        collection.insertOne(message)
+        message["_id"].toString()
     }
 
     override suspend fun read(id: String): Message? = withContext(Dispatchers.IO) {

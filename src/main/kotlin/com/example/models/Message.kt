@@ -25,16 +25,38 @@ data class Message(
     @Serializable(with = MongoDBTimestampSerializer::class)
     val timestamp: Instant,
     @SerialName("readBy")
-    val readByUser: Boolean
+    val readByUser: Boolean = false,
+    @Serializable(with = ObjectIdSerializer::class)
+    val respondsTo: ObjectId? = null,
 ) {
-    fun toDocument(): Document = Document.parse(Json.encodeToString(this))
-    fun toLastMessage() =
-        LastMessage(content = content, senderId = senderId, timestamp = timestamp)
-
-    companion object {
-        private val json = Json { ignoreUnknownKeys = true }
-        fun fromDocument(document: Document): Message = json.decodeFromString(document.toJson())
+    fun toDocument(): Document {
+        return Document().apply {
+            put("messageId", messageId) // Mantiene ObjectId
+            put("senderId", senderId) // Mantiene ObjectId
+            put("content", content)
+            put("timestamp", timestamp) // Guardar como timestamp
+            put("readBy", readByUser)
+            put("respondsTo", respondsTo) // Puede ser nulo
+        }
     }
 
+    fun toLastMessage() = LastMessage(
+        content = content,
+        senderId = senderId,
+        timestamp = timestamp
+    )
+
+    companion object {
+        fun fromDocument(document: Document): Message {
+            return Message(
+                messageId = document.getObjectId("messageId"),
+                senderId = document.getObjectId("senderId"),
+                content = document.getString("content"),
+                timestamp = document.getDate("timestamp")?.toInstant() ?: Instant.now(),
+                readByUser = document.getBoolean("readBy"),
+                respondsTo = document.get("respondsTo") as? ObjectId // Manejar nulos
+            )
+        }
+    }
 }
 

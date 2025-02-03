@@ -55,6 +55,20 @@ class ConversationServiceImpl : ConversationService, KoinComponent {
             .toList()
     }
 
+    override suspend fun findConversationByParticipants(participantIds: List<String>): Chat? = withContext(Dispatchers.IO) {
+        val objectIds = participantIds.map { ObjectId(it) }
+
+        collection.find(
+            Filters.and(
+                Filters.size("participants", objectIds.size),
+                Filters.all("participants.userId", objectIds)
+            )
+        )
+            .firstOrNull()
+            ?.let { Chat.fromDocument(it) }
+    }
+
+
     override suspend fun getUnreadCount(userId: String): Int = withContext(Dispatchers.IO) {
         collection.countDocuments(
             Filters.and(
@@ -82,6 +96,35 @@ class ConversationServiceImpl : ConversationService, KoinComponent {
             updatedAt = Instant.now()
         )
         return create(chat)
+    }
+
+    override suspend fun getLastMessages(timestamp: String, userId: String): List<Chat> = withContext(Dispatchers.IO) {
+
+        val timestampObj = Instant.parse(timestamp)
+        val userIdObjectId = ObjectId(userId)
+
+        val query = Filters.and(
+            Filters.elemMatch(
+                "participants",
+                Filters.eq("userId", userIdObjectId)
+            ),
+            Filters.elemMatch(
+                "messages",
+                Filters.gt("timestamp", timestampObj)
+            )
+        )
+
+        collection.find(query)
+            .sort(Sorts.descending("updatedAt")) // Ordenar por fecha de actualización descendente
+            .map { document ->
+
+                val chat = Chat.fromDocument(document)
+
+                val filteredMessages = chat.messages.filter { it.timestamp > timestampObj }
+
+                chat.copy(messages = filteredMessages)
+            }
+            .toList()
     }
 
     override suspend fun search(query: String): List<Chat> = withContext(Dispatchers.IO) {
