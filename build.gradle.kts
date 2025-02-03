@@ -63,4 +63,8 @@ dependencies {
     implementation("com.google.protobuf:protobuf-kotlin:4.28.3")
     implementation("org.apache.lucene:lucene-analysis-common:9.8.0")
     implementation("io.github.jan-tennert.supabase:auth-kt:3.0.1")
+    implementation(kotlin("stdlib-jdk8"))
+}
+kotlin {
+    jvmToolchain(17)
 }
