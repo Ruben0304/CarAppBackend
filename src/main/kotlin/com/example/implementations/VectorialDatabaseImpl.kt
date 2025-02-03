@@ -28,7 +28,7 @@ class VectorialDatabaseImpl : VectorialDatabaseService, KoinComponent {
             try {
                 val queryResponse: QueryResponseWithUnsignedIndices = index.queryByVector(maxResults ?: 10, vector);
                 queryResponse.matchesList
-                    .filter { it.score >= Distances.SIMILAR.value }
+//                    .filter { it.score >= Distances.SIMILAR.value}
 //                    .sortedByDescending { it.score }
                     .map { it.id }
             } catch (e: Exception) {

@@ -38,9 +38,10 @@ class Chats {
     data class LastMessages(val parent: Chats = Chats(), val timestamp: String, val userId: String)
 
 }
+
 @Serializable
 @Resource("/messages")
-class Messages{
+class Messages {
     @Serializable
     @Resource("chat")
     data class Chat(val parent: Messages = Messages(), val chatId: String)
@@ -48,7 +49,12 @@ class Messages{
 
 @Serializable
 @Resource("/carros")
-class Carros(val id: String? = null)
+class Carros(val id: String? = null) {
+    @Serializable
+    @Resource("search")
+    data class Search(val parent: Carros = Carros(), val query: String)
+}
+
 
 
 

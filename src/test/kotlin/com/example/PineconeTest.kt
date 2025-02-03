@@ -10,6 +10,7 @@ import com.example.services.EmbeddingService
 import com.example.services.dao.PiezaService
 import com.example.services.SpanishTransformerService
 import com.example.services.VectorialDatabaseService
+import com.example.services.dao.CarroService
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import org.koin.dsl.module
@@ -22,7 +23,7 @@ class PineconeTest : KoinTest {
 
     private val embeddingService: EmbeddingService by inject()
     private val vectorialDatabaseService: VectorialDatabaseService by inject()
-    private val piezasService: PiezaService by inject()
+    private val piezasService: CarroService by inject()
     private val spanishTransformerService: SpanishTransformerService by inject()
 
     @BeforeTest
@@ -61,8 +62,8 @@ class PineconeTest : KoinTest {
         // Crear los pares de ID y texto
         val textsWithIds = piezas.map { item ->
             val texto = buildString {
-                append("${item.nombre} ,")
-                item.vectorizacion.palabras_clave.forEach { append(" $it") }
+                append("${item.modelo} ,")
+                append("${item.descripcion} ,")
             }
 //            val textoTransformado = buildString {
 //                append("${item.nombre} ,")
@@ -120,7 +121,7 @@ class PineconeTest : KoinTest {
 
         try {
             vectorialDatabaseService.addInChunks(
-                indexName = PineconeCollections.PIEZAS,
+                indexName = PineconeCollections.CARROS,
                 embedDataList = embedDataList,
                 chunkSize = 3, // Reducido a 3 vectores por chunk
                 maxRetries = 3

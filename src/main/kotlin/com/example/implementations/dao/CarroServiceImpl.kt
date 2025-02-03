@@ -1,6 +1,8 @@
 package com.example.implementations.dao
 
+import com.example.enums.PineconeCollections
 import com.example.models.Carro
+import com.example.services.VectorialSearchService
 import com.example.services.dao.CarroService
 import com.mongodb.client.MongoDatabase
 import kotlinx.coroutines.Dispatchers
@@ -8,8 +10,10 @@ import kotlinx.coroutines.withContext
 import org.bson.Document
 import org.bson.types.ObjectId
 import com.mongodb.client.model.Filters
+import kotlinx.coroutines.async
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import java.util.regex.Pattern
 
 
 class CarroServiceImpl : CarroService, KoinComponent {
@@ -59,7 +63,51 @@ class CarroServiceImpl : CarroService, KoinComponent {
         TODO("Not yet implemented")
     }
 
-    override suspend fun search(query: String): List<Carro> {
-        TODO("Not yet implemented")
+
+    override suspend fun search(query: String): List<Carro> = withContext(Dispatchers.IO) {
+        val searchService: VectorialSearchService by inject()
+
+
+        val mongoDeferred = async {
+            searchWithMongo(query)
+        }
+
+        val vectorialDeferred = async {
+            val searchResult = searchService.search(query, PineconeCollections.CARROS)
+            searchResult.forEach {
+                println(it)
+            }
+
+            if (searchResult.isNotEmpty()) {
+                findMany(searchResult)
+            } else {
+                emptyList()
+            }
+        }
+
+        // Esperar a que ambas búsquedas terminen
+        val mongoResults = mongoDeferred.await()
+        val vectorialResults = vectorialDeferred.await()
+
+        // Combinar resultados, priorizando MongoDB
+        val combinedResults = mutableListOf<Carro>()
+        combinedResults.addAll(mongoResults)
+
+        // Agregar resultados vectoriales que no estén ya en los resultados de MongoDB
+        vectorialResults.forEach { vectorialCarro ->
+            if (!combinedResults.any { it.id == vectorialCarro.id }) {
+                combinedResults.add(vectorialCarro)
+            }
+        }
+
+        combinedResults
+    }
+
+    private suspend fun searchWithMongo(query: String): List<Carro> = withContext(Dispatchers.IO) {
+        val pattern = Pattern.compile(".*${query}.*", Pattern.CASE_INSENSITIVE)
+        collection.find( Filters.or(
+            Filters.regex("descripcion", pattern),
+            Filters.regex("modelo", pattern)
+        )).map(Carro::fromDocument).toList()
     }
 }
